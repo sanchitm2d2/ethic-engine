@@ -1,0 +1,392 @@
+# DE-EE map — every community-side import of the deleted ee/ (symbol grain)
+
+> Generated at the fork point (67a3e3b4). The Step-0 worklist refined from 40 files to
+> **112 distinct ee targets**. Strategy per tier below; shims are CLEAN-ROOM —
+> interfaces inferred from these callsites only, NEVER from the deleted proprietary source.
+
+## Strategy tiers
+- **T1 · dead-on-community** (CLOUD/ENTERPRISE-only mounts + their trees — the bulk):
+  deleted with the `app.ts` edition-switch cases; migrations/entities that the DB layer
+  gates by edition become never-referenced and their imports go with the callsite edits.
+- **T2 · community-live** (`app.ts` COMMUNITY case mounts `platformProjectModule` +
+  `otpModule`; guarded service calls like `platformPlanService`, `projectMemberService`,
+  `emailService`, `rbac`): clean-room shims in `app/ee-shim/` with community semantics
+  (unlimited plans, allow-authz, no-op email, empty member lists) — each shim documented.
+- **T3 · decide-with-owner**: `otpModule` (password-reset flow) — shim-away disables
+  password reset locally (OAuth binding is the ethic plan anyway); flagged, not assumed.
+
+## Toolchain note
+The workspace is **pnpm** (`workspace:*` deps — npm refuses): `corepack enable && pnpm i`,
+then `pnpm nx run server-api:tsc` (or the repo's lint/build targets) as the oracle.
+
+## The map
+- `ee/agent/agent-conversation-entity`
+  - symbols: AgentConversationEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+  - ← packages/server/api/src/app/mcp/oauth/mcp-oauth.controller.ts
+- `ee/agent/agent-entity`
+  - symbols: AgentEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/agent/agent-eval-controller`
+  - symbols: agentEvalModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/agent/agent-helpers`
+  - symbols: agentHelpers
+  - ← packages/server/api/src/app/app.ts
+  - ← packages/server/api/src/app/mcp/oauth/mcp-oauth.controller.ts
+- `ee/agent/agent-retention`
+  - symbols: agentRetention
+  - ← packages/server/api/src/app/file/file.module.ts
+- `ee/agent/agent-rpc-handlers`
+  - symbols: agentRpcHandlers
+  - ← packages/server/api/src/app/workers/rpc/worker-rpc-service.ts
+- `ee/agent/agent-service`
+  - symbols: assertAgentsResolveInProject
+  - ← packages/server/api/src/app/app.ts
+- `ee/agent/agent.module`
+  - symbols: agentModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/agent/chat-rollout-user-entity`
+  - symbols: ChatRolloutUserEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/agent/chat-visibility-helper`
+  - symbols: chatVisibilityHelper
+  - ← packages/server/api/src/app/platform/platform.controller.ts
+- `ee/agent/mcp/agent-mcp`
+  - symbols: CONVERSATION_ID_HEADER
+  - ← packages/server/api/src/app/mcp/oauth/mcp-oauth.controller.ts
+- `ee/agent/personalization/chat-personalization-entity`
+  - symbols: ChatPersonalizationEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/agent/personalization/chat-personalization-service`
+  - symbols: chatPersonalizationService
+  - ← packages/server/api/src/app/workers/rpc/worker-rpc-service.ts
+- `ee/agent/user-memory-entity`
+  - symbols: UserMemoryEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/alerts/alerts-entity`
+  - symbols: AlertEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/alerts/alerts-module`
+  - symbols: alertsModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/alerts/alerts-service`
+  - symbols: alertsService
+  - ← packages/server/api/src/app/flows/flow-run/flow-run-hooks.ts
+- `ee/api-keys/api-key-entity`
+  - symbols: ApiKeyEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/api-keys/api-key-module`
+  - symbols: apiKeyModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/api-keys/api-key-service`
+  - symbols: apiKeyService
+  - ← packages/server/api/src/app/core/security/v2/authn/authenticate.ts
+- `ee/app-connections/platform-oauth2-service`
+  - symbols: platformOAuth2Service
+  - ← packages/server/api/src/app/app.ts
+- `ee/app-credentials/app-credentials.entity`
+  - symbols: AppCredentialEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/app-credentials/app-credentials.module`
+  - symbols: appCredentialModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/appsumo/appsumo.entity`
+  - symbols: AppSumoEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/appsumo/appsumo.module`
+  - symbols: appSumoModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/audit-logs/audit-event-entity`
+  - symbols: AuditEventEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+  - ← packages/server/api/src/app/flows/flow-version/piece-upgrade.service.ts
+- `ee/audit-logs/audit-event-module`
+  - symbols: auditEventModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/authentication/ee-authorization`
+  - symbols: platformMustBeOwnedByCurrentUser, platformMustHaveFeatureEnabled, platformToEditMustBeOwnedByCurrentUser, projectMustBeTeamType
+  - ← packages/server/api/src/app/analytics/platform-analytics.module.ts
+  - ← packages/server/api/src/app/platform/platform.controller.ts
+  - ← packages/server/api/src/app/template/template.controller.ts
+  - ← packages/server/api/src/app/user-invitations/user-invitation.module.ts
+- `ee/authentication/enterprise-local-authn/enterprise-local-authn-module`
+  - symbols: enterpriseLocalAuthnModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/authentication/federated-authn/federated-authn-module`
+  - symbols: federatedAuthModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/authentication/federated-authn/federated-authn-service`
+  - symbols: federatedAuthnService
+  - ← packages/server/api/src/app/flags/flag.service.ts
+- `ee/authentication/project-role/rbac-middleware`
+  - symbols: assertRoleHasPermission, assertUserHasPermissionToFlow, getPrincipalRoleOrThrow, rbacMiddleware
+  - ← packages/server/api/src/app/app.ts
+  - ← packages/server/api/src/app/flows/flow/flow.controller.ts
+  - ← packages/server/api/src/app/mcp/mcp-permissions.ts
+  - ← packages/server/api/src/app/user-invitations/user-invitation.module.ts
+- `ee/authentication/project-role/rbac-service`
+  - symbols: rbacService
+  - ← packages/server/api/src/app/core/security/v2/authz/authorize.ts
+  - ← packages/server/api/src/app/pieces/metadata/piece-metadata-controller.ts
+- `ee/authentication/saml-authn/authn-sso-saml-module`
+  - symbols: authnSsoSamlModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/authentication/saml-authn/saml-client`
+  - symbols: invalidateSamlClientCache
+  - ← packages/server/api/src/app/platform/platform.service.ts
+- `ee/billing-usage-report/billing-usage-report-module`
+  - symbols: billingUsageReportModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/connection-keys/connection-key.entity`
+  - symbols: ConnectionKeyEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/connection-keys/connection-key.module`
+  - symbols: connectionKeyModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/database/migrations/postgres/1685053959806-MakeStripeSubscriptionNullable`
+  - symbols: MakeStripeSubscriptionNullable1685053959806
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1685538145476-addTemplates`
+  - symbols: AddTemplates1685538145476
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1685991260335-ChangeToJsonToPeserveKeys`
+  - symbols: ChangeToJsonToKeepKeysOrder1685991260335
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1686133672743-AddPinnedAndBlogUrlToTemplates`
+  - symbols: AddPinnedAndBlogUrlToTemplates1686133672743
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1686154285890-add_pinned_order`
+  - symbols: AddPinnedOrder1686154285890
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1688083336934-AddProjectIdToTemplate`
+  - symbols: AddProjectIdToTemplate1688083336934
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1688739844617-AddBillingParameters`
+  - symbols: AddBillingParameters1688739844617
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1688943462327-AddAppSumo`
+  - symbols: AddAppSumo1688943462327
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1689177797092-AddProjectMembers`
+  - symbols: AddProjectMembers1689177797092
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1689336533370-AddTasksPerDays`
+  - symbols: AddTasksPerDays1689336533370
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1689806173642-RemoveCalculatedMetrics`
+  - symbols: RemoveCalculatedMetrics1689806173642
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1690459469381-AddReferral`
+  - symbols: AddReferral1690459469381
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1694379223109-flow-template-add-user-id-and-image-url`
+  - symbols: FlowTemplateAddUserIdAndImageUrl1694379223109
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1694381968985-project-member-relations`
+  - symbols: ProjectMemberRelations1694381968985
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1694604120205-AddFeaturedDescriptionAndFlagToTemplates`
+  - symbols: AddFeaturedDescriptionAndFlagToTemplates1694604120205
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1694902537045-ModifyBilling`
+  - symbols: ModifyBilling1694902537045
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1695916063833-AddDatasourcesLimit`
+  - symbols: AddDatasourcesLimit1695916063833
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1697717995884-add-platform`
+  - symbols: AddPlatform1697717995884
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1698077078271-AddCustomDomain`
+  - symbols: AddCustomDomain1698077078271
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/database/migrations/postgres/1744780800000-AddMetadataFieldToFlowTemplates`
+  - symbols: AddMetadataFieldToFlowTemplates1744780800000
+  - ← packages/server/api/src/app/database/postgres-connection.ts
+- `ee/embed-subdomain/embed-subdomain.entity`
+  - symbols: EmbedSubdomainEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/embed-subdomain/embed-subdomain.module`
+  - symbols: embedSubdomainModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/embed-subdomain/embed-subdomain.service`
+  - symbols: embedSubdomainService
+  - ← packages/server/api/src/app/helper/embed-security.ts
+- `ee/flags/enterprise-flags.hooks`
+  - symbols: enterpriseFlagsHooks
+  - ← packages/server/api/src/app/app.ts
+- `ee/global-connections/global-connection-module`
+  - symbols: globalConnectionModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/helper/appearance-helper`
+  - symbols: appearanceHelper
+  - ← packages/server/api/src/app/app.ts
+- `ee/helper/email/email-sender/smtp-email-sender`
+  - symbols: smtpEmailSender
+  - ← packages/server/api/src/app/flags/flag.service.ts
+  - ← packages/server/api/src/app/user-invitations/user-invitation.service.ts
+- `ee/helper/email/email-service`
+  - symbols: emailService
+  - ← packages/server/api/src/app/authentication/otp/otp-service.ts
+  - ← packages/server/api/src/app/platform/platform.controller.ts
+  - ← packages/server/api/src/app/user-invitations/user-invitation.service.ts
+- `ee/managed-authn/managed-authn-module`
+  - symbols: managedAuthnModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/oauth-apps/oauth-app.entity`
+  - symbols: OAuthAppEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/oauth-apps/oauth-app.module`
+  - symbols: oauthAppModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/pieces/filters/piece-filtering-utils`
+  - symbols: resolveVisibility
+  - ← packages/server/api/src/app/pieces/metadata/piece-metadata-controller.ts
+  - ← packages/server/api/src/app/pieces/metadata/piece-metadata-service.ts
+- `ee/pieces/piece-set/piece-set.entity`
+  - symbols: PieceSetEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/pieces/piece-set/piece-set.module`
+  - symbols: pieceSetModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/pieces/platform-piece-module`
+  - symbols: platformPieceModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/platform-webhooks/platform-webhooks.module`
+  - symbols: platformWebhooksModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/platform/admin/admin-platform.controller`
+  - symbols: adminPlatformModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/platform/admin/templates/admin-platform-templates-cloud.module`
+  - symbols: adminPlatformTemplatesCloudModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/platform/concurrency-pool/concurrency-pool.entity`
+  - symbols: ConcurrencyPoolEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/platform/concurrency-pool/concurrency-pool.service`
+  - symbols: concurrencyPoolService
+  - ← packages/server/api/src/app/workers/job-queue/interceptors/rate-limiter-interceptor.ts
+- `ee/platform/platform-plan/billing-providers/autumn-billing`
+  - symbols: autumnBillingProvider
+  - ← packages/server/api/src/app/app.ts
+- `ee/platform/platform-plan/openrouter/openrouter-api`
+  - symbols: openRouterApi
+  - ← packages/server/api/src/app/ai/ai-provider-service.ts
+- `ee/platform/platform-plan/platform-plan.entity`
+  - symbols: PlatformPlanEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/platform/platform-plan/platform-plan.module`
+  - symbols: platformPlanModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/platform/platform-plan/platform-plan.service`
+  - symbols: platformPlanService
+  - ← packages/server/api/src/app/flows/flow-run/flow-run-ai-usage-tracker.ts
+  - ← packages/server/api/src/app/flows/flow/flow.controller.ts
+  - ← packages/server/api/src/app/platform/platform.controller.ts
+  - ← packages/server/api/src/app/platform/platform.service.ts
+  - ← packages/server/api/src/app/user-invitations/user-invitation.module.ts
+  - ← packages/server/api/src/app/user/user-service.ts
+- `ee/platform/platform-plan/worker-group.service`
+  - symbols: workerGroupService
+  - ← packages/server/api/src/app/core/canary/canary-routing.middleware.ts
+  - ← packages/server/api/src/app/flows/pre-warm-workers.ts
+  - ← packages/server/api/src/app/workers/job-queue/interceptors/rate-limiter-interceptor.ts
+  - ← packages/server/api/src/app/workers/job-queue/job-queue.ts
+  - ← packages/server/api/src/app/workers/machine/machine-service.ts
+- `ee/platform/platform-teardown-jobs`
+  - symbols: beginPlatformTeardown, platformTeardownJobs
+  - ← packages/server/api/src/app/app.ts
+  - ← packages/server/api/src/app/platform/platform.controller.ts
+- `ee/projects/ee-project-hooks`
+  - symbols: projectEnterpriseHooks
+  - ← packages/server/api/src/app/app.ts
+- `ee/projects/platform-project-jobs`
+  - symbols: platformProjectBackgroundJobs
+  - ← packages/server/api/src/app/app.ts
+- `ee/projects/platform-project-module`
+  - symbols: platformProjectModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/projects/platform-project-service`
+  - symbols: platformProjectService
+  - ← packages/server/api/src/app/user/user-service.ts
+- `ee/projects/project-members/project-member.entity`
+  - symbols: ProjectMemberEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/projects/project-members/project-member.module`
+  - symbols: projectMemberModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/projects/project-members/project-member.service`
+  - symbols: projectMemberService
+  - ← packages/server/api/src/app/app-connection/app-connection-service/app-connection-service.ts
+  - ← packages/server/api/src/app/core/security/v2/authz/authorize.ts
+  - ← packages/server/api/src/app/core/websockets.service.ts
+  - ← packages/server/api/src/app/user-invitations/user-invitation.service.ts
+- `ee/projects/project-plan/project-plan.entity`
+  - symbols: ProjectPlanEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/projects/project-plan/project-plan.service`
+  - symbols: projectLimitsService
+  - ← packages/server/api/src/app/flows/flow/flow.controller.ts
+- `ee/projects/project-release/git-sync/git-sync.entity`
+  - symbols: GitRepoEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/projects/project-release/git-sync/git-sync.module`
+  - symbols: gitRepoModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/projects/project-release/git-sync/git-sync.service`
+  - symbols: gitRepoService
+  - ← packages/server/api/src/app/flows/flow/flow.controller.ts
+  - ← packages/server/api/src/app/tables/table/table.controller.ts
+- `ee/projects/project-release/project-release.entity`
+  - symbols: ProjectReleaseEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/projects/project-release/project-release.module`
+  - symbols: projectReleaseModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/projects/project-release/project-state/project-state.service`
+  - symbols: projectStateService
+  - ← packages/server/api/src/app/tables/table/table.service.ts
+- `ee/projects/project-replace/project-replace.module`
+  - symbols: projectReplaceModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/projects/project-role/project-role.entity`
+  - symbols: ProjectRoleEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+  - ← packages/server/api/src/app/database/seeds/role-seed.ts
+- `ee/projects/project-role/project-role.module`
+  - symbols: projectRoleModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/projects/project-role/project-role.service`
+  - symbols: projectMemberRepo, projectRoleService
+  - ← packages/server/api/src/app/user-invitations/user-invitation.module.ts
+  - ← packages/server/api/src/app/user-invitations/user-invitation.service.ts
+  - ← packages/server/api/src/app/user/user-service.ts
+- `ee/scim/scim-module`
+  - symbols: scimModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/secret-managers/secret-manager.entity`
+  - symbols: SecretManagerEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/secret-managers/secret-managers.module`
+  - symbols: secretManagersModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/secret-managers/secret-managers.service`
+  - symbols: containsSecretManagerReference, secretManagersService
+  - ← packages/server/api/src/app/app-connection/app-connection-service/app-connection-service.ts
+  - ← packages/server/api/src/app/app-connection/app-connection-service/oauth2/oauth2-util.ts
+  - ← packages/server/api/src/app/app-connection/app-connection-service/oauth2/services/credentials-oauth2-service.ts
+  - ← packages/server/api/src/app/app-connection/app-connection-worker-controller.ts
+- `ee/signing-key/signing-key-entity`
+  - symbols: SigningKeyEntity
+  - ← packages/server/api/src/app/database/database-connection.ts
+- `ee/signing-key/signing-key-module`
+  - symbols: signingKeyModule
+  - ← packages/server/api/src/app/app.ts
+- `ee/template/platform-template.service`
+  - symbols: platformTemplateService
+  - ← packages/server/api/src/app/template/template.service.ts
+- `ee/users/user.module`
+  - symbols: userModule
+  - ← packages/server/api/src/app/app.ts
